@@ -1,10 +1,13 @@
 import React from 'react';
+import Body from '../components/Body';
 
 function ClassSearch(){
     return (
-        <div className = "App">
-            Classes List
+        <Body sidebar>
+        <div>
+            Classes search
         </div>
+    </Body>
     );
 }
 

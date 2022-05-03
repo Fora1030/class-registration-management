@@ -6,13 +6,13 @@ export default function SidebarFaculty() {
   return (
     <Navbar sticky="top" className="flex-column Sidebar">
       <Nav.Item>
-        <Nav.Link as={NavLink} to="/feed/faculty">Feed</Nav.Link>
+        <Nav.Link as={NavLink} to="/faculty/feed">Feed</Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link as={NavLink} to="/addclass">Add classes </Nav.Link>
+        <Nav.Link as={NavLink} to="/faculty/createclass">Add classes </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link as={NavLink} to="/classes"> Existing Classes  </Nav.Link>
+        <Nav.Link as={NavLink} to="/faculty/classupdate"> Existing Classes  </Nav.Link>
       </Nav.Item>
     </Navbar>
   );

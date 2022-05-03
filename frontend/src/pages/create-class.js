@@ -1,10 +1,13 @@
 import React from 'react';
+import Body from '../components/Body';
 
 function CreateClass(){
     return (
-        <div className = "App">
-            Classes List
+    <Body sidebarFaculty>
+        <div>
+            Add Classes 
         </div>
+    </Body>
     );
 }
 

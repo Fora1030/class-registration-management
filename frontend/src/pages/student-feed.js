@@ -1,10 +1,13 @@
 import React from 'react';
+import Body from '../components/Body';
 
 function StudentFeed(){
     return (
-        <div className = "App">
-            Classes List Feed
+        <Body sidebar>
+        <div>
+            Classes feed
         </div>
+    </Body>
     );
 }
 

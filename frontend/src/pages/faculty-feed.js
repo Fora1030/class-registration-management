@@ -1,10 +1,14 @@
 import React from 'react';
+import Body from '../components/Body';
+
 
 function FacultyFeed(){
     return (
-        <div className = "App">
+    <Body sidebarFaculty>
+        <div>
             Classes List
         </div>
+    </Body>
     );
 }
 
