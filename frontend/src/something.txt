@@ -1,0 +1,55 @@
+import React from 'react';
+import Container from 'react-bootstrap/Container';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import ClassSearch from './pages/class-search'
+import CreateClass from './pages/create-class'
+import FacultyFeed from './pages/faculty-feed'
+import FacultyRegistration from './pages/faculty-registration'
+import LandingPage from './pages/landing-page'
+import Login from './pages/login'
+import Schudle from './pages/schudle'
+import StudentFeed from './pages/student-feed'
+import StudentRegistration from './pages/student-registration'
+import UpdateClass from './pages/update-class'
+import Header from './components/Header';
+import Nav from 'react-bootstrap/Nav'
+import Navbar from 'react-bootstrap/Navbar'
+
+function App() {
+  return (
+
+
+    <div className ="App">
+      <Navbar bg="light" sticky="top" className="Header" >
+  <Container>
+    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+    <Navbar.Collapse id="basic-navbar-nav">
+      <Nav className="me-auto">
+        <Nav.Link href="#home">Home</Nav.Link>
+        <Nav.Link href="#link">Link</Nav.Link>
+      </Nav>
+    </Navbar.Collapse>
+  </Container>
+</Navbar>
+      <Container fluid className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path = "student/class-search" element ={<ClassSearch/>} />
+            <Route path = "faculty/createclass" element ={<CreateClass/>} />
+            <Route path = "faculty/feed" element ={<FacultyFeed/>} />
+            <Route path = "faculty/registration" element ={<FacultyRegistration/>} />
+            <Route path = "landing" element ={<LandingPage/>} />
+            <Route path = "login" element ={<Login/>} />
+            <Route path = "student/schudle" element ={<Schudle/>} />
+            <Route path = "student/feed" element ={<StudentFeed/>} />
+            <Route path = "student/registration" element ={<StudentRegistration/>} />
+            <Route path = "faculty/classupdate" element ={<UpdateClass/>} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </BrowserRouter>
+      </Container>
+    </div>
+    );
+}
+
+export default App;
