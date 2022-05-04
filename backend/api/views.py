@@ -1,10 +1,13 @@
 import imp
-from .serializers import ClassesListSerializer
+from .serializers import ClassesListSerializer, ClassesDetailSerializer
 from rest_framework import generics, permissions
+from rest_framework.views import APIView
 from classes.models import Classes
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 from rest_framework.parsers import JSONParser
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -13,7 +16,37 @@ from django.contrib.auth import authenticate
 class ClassesListAPIView(generics.ListAPIView):
     queryset = Classes.objects.all()
     serializer_class = ClassesListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
+
+    def get_object(self):
+        return self.request.user
+
+class ClassesRetrieveAPIView(generics.RetrieveAPIView):
+    lookup_field = "id"
+    queryset = Classes.objects.all()
+    serializer_class = ClassesDetailSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+class ClassesCreateAPIView(generics.CreateAPIView):
+    queryset = Classes.objects.all()
+    serializer_class = ClassesDetailSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+class ClassesRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+    lookup_field = "id"
+    queryset = Classes.objects.all()
+    serializer_class = ClassesDetailSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+class ClassesDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = "id"
+    serializer_class = ClassesDetailSerializer
+    queryset = Classes.objects.all()
+    permission_classes = [permissions.AllowAny]
+
 
 @csrf_exempt
 def student_signup(request):
@@ -77,3 +110,21 @@ def login(request):
             except:
                 token = Token.objects.create(user = user)
             return JsonResponse({'token': str(token)}, status=201)
+
+
+def current_user(request):
+    if request.method == 'GET':
+        data = JSONParser().parse(user)
+        
+        print(data['username'] + '-----------------------------')
+        return Response({
+            'username' : data['username'],
+            
+        })
+
+
+class Logout(APIView):
+    def get(self, request, format=None):
+        # simply delete the token to force a login
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)

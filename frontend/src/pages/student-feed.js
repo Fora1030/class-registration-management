@@ -1,11 +1,27 @@
-import React from 'react';
+import {React, useState, useEffect} from 'react';
 import Body from '../components/Body';
+import ApiServices from "../services/api-services";
 
-function StudentFeed(){
+const StudentFeed = props => {
+    const [user, setUser] = useState([]);
+
+    useEffect(() => {
+        retrieveUser();
+      }, [props.token]);
+    
+      const retrieveUser = () => {
+        
+        ApiServices.getUser()
+        .then( response => {
+            setUser(response.data);
+        })
+
+      };
+
     return (
         <Body sidebar>
         <div>
-            Classes feed
+            Classes feed {user.first_name}
         </div>
     </Body>
     );

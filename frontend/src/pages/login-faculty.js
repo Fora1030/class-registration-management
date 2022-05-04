@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button'; 
 
 const FacultyLogin = (props) => {
-    let navigate = useNavigate(); 
+  let navigate = useNavigate(); 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 

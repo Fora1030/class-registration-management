@@ -2,6 +2,7 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import { Routes, Route, Navigate, NavLink } from 'react-router-dom';
 import ClassSearch from './pages/class-search';
+import ClassesDetails from './pages/classesDetail';
 import CreateClass from './pages/create-class';
 import FacultyFeed from './pages/faculty-feed';
 import FacultyRegistration from './pages/faculty-registration';
@@ -30,7 +31,7 @@ function App() {
       setToken(response.data.token);
       setUser(user.username);
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', response.data.username);
+      localStorage.setItem('user', response.username);
       setError('');
     })
     .catch(e => {
@@ -40,6 +41,7 @@ function App() {
   }
 
   async function logout(user=null){
+    ApiServices.logout(token);
     setToken('');
     setUser('');
     localStorage.setItem('token','');
@@ -115,18 +117,19 @@ function App() {
           <Routes>
             <Route path = "/" element ={<LandingPage/>} />
             <Route path = "/register" element ={<Register/>} />
-            <Route path = "/student/class/search" element ={<ClassSearch/>} />
-            <Route path = "/faculty/feed" element ={<FacultyFeed/>} />
+            <Route path = "/student/class/search" element ={<ClassSearch token={token}/>} />
+            <Route path = "/class/details" element ={<ClassesDetails token={token}/>} />
+            <Route path = "/faculty/feed" element ={<FacultyFeed token={token}/>} />
             <Route path = "/faculty/registration" element ={<FacultyRegistration facultySignup={facultySignup}/>} />
             <Route path = "/landing" element ={<LandingPage/>} />
             <Route path = "/student/login" element ={<Login login={login}/>} />
             <Route path = "/faculty/login" element ={<FacultyLogin login={login}/>} />
             <Route path = "/login/options" element ={<LoginOptions/>} />
-            <Route path = "/student/schudle" element ={<Schudle/>} />
-            <Route path = "/student/feed" element ={<StudentFeed/>} />
+            <Route path = "/student/schudle" element ={<Schudle token={token}/>} />
+            <Route path = "/student/feed" element ={<StudentFeed token={token}/>} />
             <Route path = "/student/registration" element ={<StudentRegistration studentSignup ={studentSignup}/>} />
-            <Route path = "/faculty/classupdate" element ={<UpdateClass/>} />
-            <Route path = "/faculty/createclass" element ={<CreateClass/>} />
+            <Route path = "/faculty/classupdate" element ={<UpdateClass token={token}/>} />
+            <Route path = "/faculty/createclass" element ={<CreateClass token={token}/>} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
       </Container>

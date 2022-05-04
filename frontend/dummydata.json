@@ -1,0 +1,12 @@
+{
+    "class_name" :  "CMSC 430",
+    "professor_name" : "CMSC 430",
+    "number_of_credits": "3",
+    "description" :  "Prerequisites: CMSC 330 and programming experience in C or C++. An examination of the formal translation of programming languages, syntax, and semantics. The goal is to write programs that are constructed using program generators. Topics include evaluation of finite-state grammars and recognizers; context-free parsing techniques, such as recursive descent, precedence, LL(K), LR(K), and SLR(K); and improvement and generation of machine-independent code and syntax-directed translation schema. Programming projects that implement parts of a compiler are required.",
+    "location" :  "Online",
+    "start_date" :  "2022-03-16",
+    "end_date" :  "2022-05-10",
+    "avaible_seats" : 50, 
+    "students" : "",
+    "open" : true
+}

@@ -43,11 +43,14 @@ INSTALLED_APPS = [
     'api',
 ]
 
-REST_FRAMEWORK = {      
-    'DEFAULT_AUTHENTICATION_CLASSES':[          
-        'rest_framework.authentication.TokenAuthentication',      
-        ]  
-    }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -58,10 +61,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    
 ]
 
 CORS_ORIGIN_WHITELIST = [    
+    'http://localhost:3000/student/class/search',  
     'http://localhost:3000',  
+    'http://127.0.0.1:3000',  
     ]
 
 

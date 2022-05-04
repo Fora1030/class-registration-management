@@ -24,6 +24,12 @@ code {
   align-self: flex-start;
   align-items: start;
 }
+.Carousel {
+  margin-left: 0px;
+  top: 0px;
+  align-self: flex-start;
+  align-items: start;
+}
 
 .Header .nav-item .active {
   background-color: #def;
@@ -34,7 +40,7 @@ code {
 }
 
 .Sidebar {
-  width: 120px;
+  width: 100px;
   margin: 5px;
   position: sticky;
   top: 62px;
@@ -65,4 +71,7 @@ code {
 .InputField {
   margin-top: 15px;
   margin-bottom: 15px;
+}
+h2 {
+  color: black;
 }
