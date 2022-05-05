@@ -16,7 +16,7 @@ from django.contrib.auth import authenticate
 class ClassesListAPIView(generics.ListAPIView):
     queryset = Classes.objects.all()
     serializer_class = ClassesListSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.request.user
@@ -25,27 +25,27 @@ class ClassesRetrieveAPIView(generics.RetrieveAPIView):
     lookup_field = "id"
     queryset = Classes.objects.all()
     serializer_class = ClassesDetailSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class ClassesCreateAPIView(generics.CreateAPIView):
     queryset = Classes.objects.all()
     serializer_class = ClassesDetailSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class ClassesRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
     lookup_field = "id"
     queryset = Classes.objects.all()
     serializer_class = ClassesDetailSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class ClassesDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = "id"
     serializer_class = ClassesDetailSerializer
     queryset = Classes.objects.all()
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 @csrf_exempt
