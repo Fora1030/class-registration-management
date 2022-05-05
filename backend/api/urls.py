@@ -11,7 +11,6 @@ urlpatterns = [
     path('update/classes/<int:id>/', views.ClassesRetrieveUpdateAPIView.as_view(), name="classes_update"),
     path('delete/classes/<int:id>/', views.ClassesDestroyAPIView.as_view(), name="classes_delete"),
     path('user/logout/', views.Logout.as_view(), name="logout"),
-    path('user/', views.current_user, name="user"),
     path('login/', views.login,  name="login"),
 ]
 
