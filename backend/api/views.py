@@ -112,17 +112,6 @@ def login(request):
             return JsonResponse({'token': str(token)}, status=201)
 
 
-def current_user(request):
-    if request.method == 'GET':
-        data = JSONParser().parse(user)
-        
-        print(data['username'] + '-----------------------------')
-        return Response({
-            'username' : data['username'],
-            
-        })
-
-
 class Logout(APIView):
     def get(self, request, format=None):
         # simply delete the token to force a login
