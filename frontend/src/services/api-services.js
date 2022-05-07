@@ -9,6 +9,16 @@ class ApiServices{
         axios.defaults.headers.common['Authorization'] = 'Token ' + token;
         return axios.get('http://127.0.0.1:8000/api/classes/');
     }
+    getUserClasses(token, id){
+        console.log(token);
+        axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+        return axios.get('http://127.0.0.1:8000/api/classes/'+id+'/');
+    }
+    getStudentProfile(token, id){
+        console.log(token);
+        axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+        return axios.get('http://127.0.0.1:8000/api/profile/'+id+'/');
+    }
 
     createClasses(data, token){
         console.log(token);

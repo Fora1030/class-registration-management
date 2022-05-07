@@ -7,9 +7,9 @@ import Container from "react-bootstrap/esm/Container";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
-import Alert from 'react-bootstrap/Alert'
+import Alert from "react-bootstrap/Alert";
 
-const ClassSearch = props => {
+const ClassSearch = (props) => {
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const ClassSearch = props => {
 
   const retrieveClasses = () => {
     ApiServices.getClasses(props.token)
-      .then( response => {
+      .then((response) => {
         setClasses(response.data);
       })
       .catch((e) => {
@@ -27,50 +27,54 @@ const ClassSearch = props => {
   };
 
   return (
-      <Container>
-        {props.token == null || props ===""?(
-            <Alert variant="warning">
-                You are not logged in. Please <Link to = {"/login/options"}>login</Link>
-            </Alert>
-        ):(
-                <Body sidebar>
-            <div>
-      {classes.map((todo) => {
-          return (
-              <Card key={todo.id} className="mb-3">
-            <Card.Body>
-              <div>
-                <Card.Text> <b>Class:</b> {todo.class_name}</Card.Text>
-                <Card.Text>
-                  <b>Professor:</b> {todo.professor_name}
-                </Card.Text>
-                <Card.Text>
-                  <b>Number of credits:</b> {todo.number_of_credits}
-                </Card.Text>
-                <Card.Text>Start Date: {todo.start_date} End Date: {todo.end_date}</Card.Text>
-              </div>
-              <Link
-                to={{
-                    pathname: "/todos/" + todo.id,
-                    state: {
-                        currentTodo: todo,
-                    },
-                }}
-                >
-                <Button variant="outline-info" className="me-2">
-                  Enroll
-                </Button>
-              </Link>
+    <Container>
+      {props.token == null || props === "" ? (
+        <Alert variant="warning">
+          You are not logged in. Please <Link to={"/login/options"}>login</Link>
+        </Alert>
+      ) : (
+        <Body sidebar>
+          <div>
+            {classes.map((todo) => {
+              return (
+                <Card key={todo.id} className="mb-3">
+                  <Card.Body>
+                    <div>
+                      <Card.Text>
+                        {" "}
+                        <b>Class:</b> {todo.class_name}
+                      </Card.Text>
+                      <Card.Text>
+                        <b>Professor:</b> {todo.professor_name}
+                      </Card.Text>
+                      <Card.Text>
+                        <b>Number of credits:</b> {todo.number_of_credits}
+                      </Card.Text>
+                      <Card.Text>
+                        Start Date: {todo.start_date} End Date: {todo.end_date}
+                      </Card.Text>
+                    </div>
+                    <Link
+                      to={{
+                        pathname: "/todos/" + todo.id,
+                        state: {
+                          currentTodo: todo,
+                        },
+                      }}
+                    >
+                      <Button variant="outline-info" className="me-2">
+                        Enroll
+                      </Button>
+                    </Link>
 
-              
-              <Button variant="outline-info">More Details</Button>
-            </Card.Body>
-          </Card>
-        );
-    })}
-        </div>
+                    <Button variant="outline-info">More Details</Button>
+                  </Card.Body>
+                </Card>
+              );
+            })}
+          </div>
         </Body>
-        )}
+      )}
     </Container>
   );
 };

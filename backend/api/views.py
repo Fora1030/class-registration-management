@@ -1,8 +1,8 @@
-import imp
-from .serializers import ClassesListSerializer, ClassesDetailSerializer
+from urllib import request
+from .serializers import ClassesListSerializer, StudentProfileDetailSerializer,ClassesDetailSerializer, StudentProfileSerializer
 from rest_framework import generics, permissions
 from rest_framework.views import APIView
-from classes.models import Classes
+from classes.models import Classes , StudentProfile
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 from rest_framework.parsers import JSONParser
@@ -11,7 +11,9 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate 
+from rest_framework.decorators import api_view
+from django.contrib.auth import authenticate, logout
+from django.views.generic import ListView
 
 class ClassesListAPIView(generics.ListAPIView):
     queryset = Classes.objects.all()
@@ -39,6 +41,12 @@ class ClassesRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
     queryset = Classes.objects.all()
     serializer_class = ClassesDetailSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+class StudentProfileRetrieveUpdateAPIView(generics.RetrieveAPIView):
+    lookup_field = "user_id"
+    queryset = StudentProfile.objects.all()
+    serializer_class = StudentProfileSerializer
+    permission_classes = [permissions.AllowAny]
 
 
 class ClassesDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -111,9 +119,14 @@ def login(request):
                 token = Token.objects.create(user = user)
             return JsonResponse({'token': str(token)}, status=201)
 
+def logout(request):
+    return logout(request)
 
-class Logout(APIView):
-    def get(self, request, format=None):
-        # simply delete the token to force a login
-        request.user.auth_token.delete()
-        return Response(status=status.HTTP_200_OK)
+@api_view(['GET'])
+def current_user(request):
+    user = request.user
+    return Response({
+      'id' : user.id,
+      'username' : user.username,
+       # and so on...
+    })

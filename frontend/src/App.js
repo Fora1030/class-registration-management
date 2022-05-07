@@ -40,6 +40,7 @@ function App() {
     });
   }
 
+
   async function logout(user=null){
     ApiServices.logout(token);
     setToken('');
@@ -125,7 +126,7 @@ function App() {
             <Route path = "/student/login" element ={<Login login={login}/>} />
             <Route path = "/faculty/login" element ={<FacultyLogin login={login}/>} />
             <Route path = "/login/options" element ={<LoginOptions/>} />
-            <Route path = "/student/schudle" element ={<Schudle token={token}/>} />
+            <Route path = "/student/schudle" element ={<Schudle token={token} />} />
             <Route path = "/student/feed" element ={<StudentFeed token={token}/>} />
             <Route path = "/student/registration" element ={<StudentRegistration studentSignup ={studentSignup}/>} />
             <Route path = "/faculty/classupdate" element ={<UpdateClass token={token}/>} />

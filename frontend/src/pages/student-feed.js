@@ -21,7 +21,7 @@ const StudentFeed = props => {
     return (
         <Body sidebar>
         <div>
-            Classes feed {user.first_name}
+            Classes feed {user.id}
         </div>
     </Body>
     );
