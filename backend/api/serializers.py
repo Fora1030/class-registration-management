@@ -7,7 +7,7 @@ class ClassesListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Classes
         fields = [
-            'id',
+            'class_id',
             'class_name',
             'professor_name',
             'number_of_credits',
@@ -17,10 +17,9 @@ class ClassesListSerializer(serializers.ModelSerializer):
             'end_date',
             'avaible_seats',
             'open',
-            'student',
         ]
 
-        depht = 1
+       
     def get_absolute_url(self, obj):
         return reverse('classes_detail', args=(obj.pk,))
 
@@ -28,7 +27,7 @@ class ClassesDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Classes
         fields = [
-            'id', 
+            'class_id',  
             'class_name',
             'professor_name',
             'number_of_credits',
@@ -38,12 +37,12 @@ class ClassesDetailSerializer(serializers.ModelSerializer):
             'end_date',
             'avaible_seats',
             'open',
-            'student',
             
         ]
-        depht = 1
+      
 
 class StudentProfileSerializer(serializers.ModelSerializer):
+    courses = ClassesListSerializer(many=True, read_only = False)
     class Meta:
         model = StudentProfile
         fields = [
@@ -52,17 +51,12 @@ class StudentProfileSerializer(serializers.ModelSerializer):
             'user',
             'courses',
         ]
-        depht = 1
-    def get_absolute_url(self, obj):
-        return reverse('students_detail', args=(obj.pk,))
-
-class StudentProfileDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = StudentProfile
-        fields = [
-            'user_id',
-            'bio',
-            'user',
-            'courses',
-        ]
-        depht = 1
+    
+    def update(self, instance, validated_data):
+        courses_data = validated_data.pop('courses')
+        instance = super().update(instance, validated_data)
+        for course_data in courses_data:
+            print(course_data.get('class_id'))
+            course = Classes.objects.get(pk=course_data.get('class_name'))
+            instance.courses.add(course)
+        return instance

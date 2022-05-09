@@ -1,19 +1,22 @@
-from urllib import request
-from .serializers import ClassesListSerializer, StudentProfileDetailSerializer,ClassesDetailSerializer, StudentProfileSerializer
-from rest_framework import generics, permissions
+from rest_framework.decorators import api_view
+from rest_framework import generics, permissions, viewsets
 from rest_framework.views import APIView
-from classes.models import Classes , StudentProfile
-from django.db import IntegrityError
-from django.contrib.auth.models import User
 from rest_framework.parsers import JSONParser
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from .serializers import ClassesListSerializer,ClassesDetailSerializer, StudentProfileSerializer
+from classes.models import Classes , StudentProfile
+from urllib import request
+from django.db import IntegrityError
+from django.contrib.auth.models import User
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate, logout
 from django.views.generic import ListView
+
+
+
 
 class ClassesListAPIView(generics.ListAPIView):
     queryset = Classes.objects.all()
@@ -24,7 +27,7 @@ class ClassesListAPIView(generics.ListAPIView):
         return self.request.user
 
 class ClassesRetrieveAPIView(generics.RetrieveAPIView):
-    lookup_field = "id"
+    lookup_field = "class_id"
     queryset = Classes.objects.all()
     serializer_class = ClassesDetailSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -37,24 +40,27 @@ class ClassesCreateAPIView(generics.CreateAPIView):
 
 
 class ClassesRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
-    lookup_field = "id"
+    lookup_field = "class_id"
     queryset = Classes.objects.all()
     serializer_class = ClassesDetailSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-class StudentProfileRetrieveUpdateAPIView(generics.RetrieveAPIView):
-    lookup_field = "user_id"
-    queryset = StudentProfile.objects.all()
-    serializer_class = StudentProfileSerializer
-    permission_classes = [permissions.AllowAny]
 
 
 class ClassesDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    lookup_field = "id"
+    lookup_field = "class_id"
     serializer_class = ClassesDetailSerializer
     queryset = Classes.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
+
+class StudentProfileRetrieveUpdateAPIView(viewsets.ModelViewSet):
+    serializer_class = StudentProfileSerializer
+    permission_classes = [permissions.AllowAny]
+    def get_queryset(self): 
+        student = StudentProfile.objects.all()
+        return student
+
+    
 
 @csrf_exempt
 def student_signup(request):
@@ -128,5 +134,6 @@ def current_user(request):
     return Response({
       'id' : user.id,
       'username' : user.username,
-       # and so on...
+      'first_name' : user.first_name,
+      'last_name' : user.last_name,
     })
