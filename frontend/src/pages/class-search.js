@@ -48,8 +48,6 @@ const ClassSearch = (props) => {
   }
 
   const enrollClass = (data) =>{
-    console.log("click")
-    console.log("data", data)
     ApiServices.enrollClass(props.currentUser.id, data, props.token)
     alert('You have succesfully enrolled!')
     let path = "/student/schudle";
@@ -59,6 +57,17 @@ const ClassSearch = (props) => {
 
   return (
     <Container>
+       {props.currentUser.is_staff === true ? (
+          <>
+          <Alert variant="warning">
+          You are in the students interface to go back to the faculty feed <Link to={"/faculty/feed"}>cilck here</Link>
+            </Alert>
+            
+          </>
+        ) : (
+          <>
+          </>
+        )}
       {(props.token == null || props === "") && (props.currentUser =="") ? (
         <Alert variant="warning">
           You are not logged in. Please <Link to={"/login/options"}>login</Link>

@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';  
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
-import Alert from 'react-bootstrap/Alert'
+import Alert from 'react-bootstrap/Alert';
 
 
 const UpdateClass = props => {

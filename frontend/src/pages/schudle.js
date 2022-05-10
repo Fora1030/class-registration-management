@@ -3,7 +3,8 @@ import Body from '../components/Body';
 import ApiServices from "../services/api-services";
 import Container from "react-bootstrap/esm/Container";
 import Table from 'react-bootstrap/Table';
-
+import { Link } from "react-router-dom";
+import Alert from 'react-bootstrap/Alert';
 
 const StudentSchudle = (props) => {
   const [profile, setProfile] = useState([]);
@@ -32,6 +33,17 @@ const StudentSchudle = (props) => {
 
   return (
     <Container>
+       {props.currentUser.is_staff === true ? (
+          <>
+          <Alert variant="warning">
+              You are in the students interface to go back to the faculty feed <Link to={"/faculty/feed"}>cilck here</Link>
+            </Alert>
+            
+          </>
+        ) : (
+          <>
+          </>
+        )}
       <Body sidebar>
         {profile == "" ? (
           <h1>class loading</h1>

@@ -19,9 +19,14 @@ const FacultyLogin = (props) => {
     setPassword(password);
   };
   const login = () => {
-    props.login({username: username , password: password});
-    let path = "/faculty/feed"; 
-    navigate(path);
+    if ((username || password ) === ""){
+      alert('You must fill all fields!')
+    } else{
+
+      props.login({username: username , password: password});
+      let path = "/faculty/feed"; 
+      navigate(path);
+    }
   }
 
   return (

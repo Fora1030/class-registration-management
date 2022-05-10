@@ -44,6 +44,13 @@ function App() {
         setUser(user.username);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", response.username);
+        if(!response.ok){
+          console.log("Response not okay ")
+        } else{
+
+          console.log(" okay ")
+        }
+
         setError("");
         getCurrentUser(response.data.token);
       })

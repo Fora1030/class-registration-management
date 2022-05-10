@@ -32,7 +32,7 @@ const StudentFeed = props => {
         {props.currentUser.is_staff === true ? (
           <>
           <Alert variant="warning">
-              You are logged in as a faculty member to go to faculty feed <Link to={"/faculty/feed"}>cilck here</Link>
+          You are in the students interface to go back to the faculty feed <Link to={"/faculty/feed"}>cilck here</Link>
             </Alert>
             
           </>

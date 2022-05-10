@@ -1,11 +1,12 @@
-import React, {useState} from 'react';  
-import { useNavigate } from 'react-router-dom';
+import React, {useState, useEffect, useRef } from 'react';  
+import { useNavigate, useLocation } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';  
 import Container from 'react-bootstrap/Container';  
 import Button from 'react-bootstrap/Button'; 
+import { useFlash } from '../components/FlashProvider'; 
 
 const Login = (props) => {
-    let navigate = useNavigate(); 
+  let navigate = useNavigate(); 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,9 +20,14 @@ const Login = (props) => {
     setPassword(password);
   };
   const login = () => {
-    props.login({username: username , password: password});
-    let path = "/student/feed"; 
-    navigate(path);
+    if ((username || password ) === ""){
+      alert('You must fill all fields!')
+    } else{
+
+      props.login({username: username , password: password});
+      let path = "/student/feed"; 
+      navigate(path);
+    }
   }
 
   return (
