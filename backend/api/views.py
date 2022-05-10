@@ -30,7 +30,7 @@ class ClassesRetrieveAPIView(generics.RetrieveAPIView):
     lookup_field = "class_id"
     queryset = Classes.objects.all()
     serializer_class = ClassesDetailSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 
 class ClassesCreateAPIView(generics.CreateAPIView):
@@ -43,7 +43,7 @@ class ClassesRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
     lookup_field = "class_id"
     queryset = Classes.objects.all()
     serializer_class = ClassesDetailSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 
 class ClassesDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):

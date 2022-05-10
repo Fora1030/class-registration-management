@@ -8,8 +8,13 @@ import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 import Alert from "react-bootstrap/Alert";
+import Accordion from "react-bootstrap/Accordion";
+import { useNavigate } from "react-router-dom";
+import { useAccordionButton } from 'react-bootstrap/AccordionButton';
+
 
 const ClassSearch = (props) => {
+  let navigate = useNavigate();
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
@@ -26,50 +31,84 @@ const ClassSearch = (props) => {
       });
   };
 
+  function CustomToggle({ children, eventKey }) {
+    const decoratedOnClick = useAccordionButton(eventKey, () =>
+      console.log('totally custom!'),
+    );
+  
+    return (
+      <button
+        type="button"
+        style={{ backgroundColor: 'pink' }}
+        onClick={decoratedOnClick}
+      >
+        {children}
+      </button>
+    );
+  }
+
+  const enrollClass = (data) =>{
+    console.log("click")
+    console.log("data", data)
+    ApiServices.enrollClass(props.currentUser.id, data, props.token)
+    alert('You have succesfully enrolled!')
+    let path = "/student/schudle";
+    navigate(path);
+  }
+
+
   return (
     <Container>
-      {props.token == null || props === "" ? (
+      {(props.token == null || props === "") && (props.currentUser =="") ? (
         <Alert variant="warning">
           You are not logged in. Please <Link to={"/login/options"}>login</Link>
         </Alert>
       ) : (
         <Body sidebar>
           <div>
-            {classes.map((todo) => {
+            {classes.map((item) => {
               return (
-                <Card key={todo.id} className="mb-3">
-                  <Card.Body>
-                    <div>
-                      <Card.Text>
-                        {" "}
-                        <b>Class:</b> {todo.class_name}
-                      </Card.Text>
-                      <Card.Text>
-                        <b>Professor:</b> {todo.professor_name}
-                      </Card.Text>
-                      <Card.Text>
-                        <b>Number of credits:</b> {todo.number_of_credits}
-                      </Card.Text>
-                      <Card.Text>
-                        Start Date: {todo.start_date} End Date: {todo.end_date}
-                      </Card.Text>
-                    </div>
-                    <Link
-                      to={{
-                        pathname: "/todos/" + todo.id,
-                        state: {
-                          currentTodo: todo,
-                        },
-                      }}
-                    >
-                      <Button variant="outline-info" className="me-2">
-                        Enroll
-                      </Button>
-                    </Link>
 
-                    <Button variant="outline-info">More Details</Button>
+                <Accordion defaultActiveKey="0">
+                <Card>
+                  <Card.Body>
+                    <b>{item.class_name} </b> <br></br>
+                    <b>Starts:</b> {item.start_date} <br></br>
+                    <b>Ends:</b> {item.end_date} 
                   </Card.Body>
+                  <Card.Header>
+                    <CustomToggle eventKey="1">More</CustomToggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey="1">
+                    
+                    <Card.Body>
+                      
+                    <b>Class: </b>{item.class_name} <br></br>
+                    <b>Professor: </b>{item.professor_name}<br></br>
+                    <b>Credits: </b>{item.number_of_credits}<br></br>
+                    <b>Description: </b> <p>{item.description}</p>
+                    <b>Location: </b>{item.location}<br></br>
+                    <b>Starts: </b>{item.start_date}<br></br>
+                    <b>Ends: </b>{item.end_date}<br></br>
+                    <b>Open seats: </b>{item.avaible_seats}<br></br>
+                    <Button variant="primary" onClick={() => enrollClass({
+                      
+                      "user_id": props.currentUser.id,
+                        "user":  props.currentUser.id,
+                        "courses": [
+                            {
+                                "class_id": item.class_id,
+                                "class_name": item.class_id
+                            }
+                        ]
+                      
+                      })}>Enroll</Button>{' '}
+                    </Card.Body>
+
+                  </Accordion.Collapse>
                 </Card>
+              </Accordion>
+
               );
             })}
           </div>

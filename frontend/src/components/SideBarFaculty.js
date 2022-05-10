@@ -12,7 +12,7 @@ export default function SidebarFaculty() {
         <Nav.Link as={NavLink} to="/faculty/createclass">Add classes </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link as={NavLink} to="/faculty/classupdate"> Existing Classes  </Nav.Link>
+        <Nav.Link as={NavLink} to="/faculty/existingclasses"> Existing Classes  </Nav.Link>
       </Nav.Item>
     </Navbar>
   );

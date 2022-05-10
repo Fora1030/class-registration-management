@@ -1,55 +1,123 @@
-import React from 'react';
-import Container from 'react-bootstrap/Container';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import ClassSearch from './pages/class-search'
-import CreateClass from './pages/create-class'
-import FacultyFeed from './pages/faculty-feed'
-import FacultyRegistration from './pages/faculty-registration'
-import LandingPage from './pages/landing-page'
-import Login from './pages/login'
-import Schudle from './pages/schudle'
-import StudentFeed from './pages/student-feed'
-import StudentRegistration from './pages/student-registration'
-import UpdateClass from './pages/update-class'
-import Header from './components/Header';
-import Nav from 'react-bootstrap/Nav'
-import Navbar from 'react-bootstrap/Navbar'
-
-function App() {
-  return (
+import { React, Component, useState, useEffect } from "react";
+import Body from "../components/Body";
+import axios from "axios";
+import ClassesDetails from "./classesDetail";
+import ApiServices from "../services/api-services";
+import Container from "react-bootstrap/esm/Container";
+import Card from "react-bootstrap/Card";
+import { Link } from "react-router-dom";
+import Button from "react-bootstrap/esm/Button";
+import Alert from "react-bootstrap/Alert";
+import Accordion from "react-bootstrap/Accordion";
+import { useNavigate } from "react-router-dom";
+import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 
 
-    <div className ="App">
-      <Navbar bg="light" sticky="top" className="Header" >
-  <Container>
-    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-    <Navbar.Collapse id="basic-navbar-nav">
-      <Nav className="me-auto">
-        <Nav.Link href="#home">Home</Nav.Link>
-        <Nav.Link href="#link">Link</Nav.Link>
-      </Nav>
-    </Navbar.Collapse>
-  </Container>
-</Navbar>
-      <Container fluid className="App">
-        <BrowserRouter>
-          <Routes>
-            <Route path = "student/class-search" element ={<ClassSearch/>} />
-            <Route path = "faculty/createclass" element ={<CreateClass/>} />
-            <Route path = "faculty/feed" element ={<FacultyFeed/>} />
-            <Route path = "faculty/registration" element ={<FacultyRegistration/>} />
-            <Route path = "landing" element ={<LandingPage/>} />
-            <Route path = "login" element ={<Login/>} />
-            <Route path = "student/schudle" element ={<Schudle/>} />
-            <Route path = "student/feed" element ={<StudentFeed/>} />
-            <Route path = "student/registration" element ={<StudentRegistration/>} />
-            <Route path = "faculty/classupdate" element ={<UpdateClass/>} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </BrowserRouter>
-      </Container>
-    </div>
+const ClassSearch = (props) => {
+  let navigate = useNavigate();
+  const [classes, setClasses] = useState([]);
+
+  useEffect(() => {
+    retrieveClasses();
+  }, [props.token]);
+
+  const retrieveClasses = () => {
+    ApiServices.getClasses(props.token)
+      .then((response) => {
+        setClasses(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const moredetails = () => {
+    let path = "/student/feed";
+    navigate(path);
+  };
+
+  function CustomToggle({ children, eventKey }) {
+    const decoratedOnClick = useAccordionButton(eventKey, () =>
+      console.log('totally custom!'),
     );
-}
+  
+    return (
+      <button
+        type="button"
+        style={{ backgroundColor: 'pink' }}
+        onClick={decoratedOnClick}
+      >
+        {children}
+      </button>
+    );
+  }
 
-export default App;
+  const enrollClass = (data) =>{
+    ApiServices.enrollClass(props.currentUser.id, data, props.token)
+    let path = "/student/feed";
+    navigate(path);
+  }
+
+
+  return (
+    <Container>
+      {props.token == null || props === "" ? (
+        <Alert variant="warning">
+          You are not logged in. Please <Link to={"/login/options"}>login</Link>
+        </Alert>
+      ) : (
+        <Body sidebar>
+          <div>
+            {classes.map((item) => {
+              return (
+
+                <Accordion defaultActiveKey="0">
+                <Card>
+                  <Card.Body>
+                    <b>{item.class_name} </b> <br></br>
+                    <b>Starts:</b> {item.start_date} <br></br>
+                    <b>Ends:</b> {item.end_date} 
+                  </Card.Body>
+                  <Card.Header>
+                    <CustomToggle eventKey="1">More</CustomToggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey="1">
+                    
+                    <Card.Body>
+                      
+                    <b>Class: </b>{item.class_name} <br></br>
+                    <b>Professor: </b>{item.professor_name}<br></br>
+                    <b>Credits: </b>{item.number_of_credits}<br></br>
+                    <b>Description: </b> <p>{item.description}</p>
+                    <b>Location: </b>{item.location}<br></br>
+                    <b>Starts: </b>{item.start_date}<br></br>
+                    <b>Ends: </b>{item.end_date}<br></br>
+                    <b>Open seats: </b>{item.avaible_seats}<br></br>
+                    <Button variant="primary" onClick={enrollClass({
+                      
+                        "user_id": props.currentUser.id,
+                        "user":  props.currentUser.id,
+                        "courses": [
+                            {
+                                "class_id": item.class_id,
+                                "class_name": item.class_id
+                            }
+                        ]
+                    
+                    })}>Enroll</Button>{' '}
+                    </Card.Body>
+
+                  </Accordion.Collapse>
+                </Card>
+              </Accordion>
+
+              );
+            })}
+          </div>
+        </Body>
+      )}
+    </Container>
+  );
+};
+
+export default ClassSearch;

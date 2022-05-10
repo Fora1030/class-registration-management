@@ -14,6 +14,7 @@ import Schudle from './pages/schudle';
 import StudentFeed from './pages/student-feed';
 import StudentRegistration from './pages/student-registration';
 import UpdateClass from './pages/update-class';
+import ExistingClasses from './pages/existing-classes';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import ApiServices from './services/api-services';
@@ -22,16 +23,26 @@ import LoginOptions from './pages/login-options';
 
 function App() {
   const[user, setUser] = React.useState(null);
+  const[currentUser, setCurrentUser] = React.useState([]);
   const[token, setToken] = React.useState(null);
   const[error, setError] = React.useState("");
+  
+  async function getCurrentUser(){
+    ApiServices.getUser().then( response =>{
+      setCurrentUser(response.data);
+      localStorage.setItem('currentUser', response.data)
+    })
+  };
 
   async function login(user=null){
     ApiServices.login(user)
     .then(response => {
       setToken(response.data.token);
       setUser(user.username);
+      setCurrentUser(currentUser);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', response.username);
+      localStorage.setItem('currentUser', currentUser);
       setError('');
     })
     .catch(e => {
@@ -40,13 +51,16 @@ function App() {
     });
   }
 
-
   async function logout(user=null){
     ApiServices.logout(token);
     setToken('');
     setUser('');
+    setCurrentUser('');
+
     localStorage.setItem('token','');
     localStorage.setItem('user','');
+    localStorage.setItem('currentUser','');
+
   }
 
   async function studentSignup(user=null){
@@ -77,8 +91,21 @@ function App() {
       console.log(e);
       setError(e.toString());
     });
+
+    
   }
-  
+  const [classes, setClasses] = React.useState([]);
+ 
+
+  const retrieveClasses = () => {
+    ApiServices.getClasses(token)
+      .then((response) => {
+        setClasses(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   return (
     <div className="App">
       <Container fluid className="App">
@@ -118,18 +145,19 @@ function App() {
           <Routes>
             <Route path = "/" element ={<LandingPage/>} />
             <Route path = "/register" element ={<Register/>} />
-            <Route path = "/student/class/search" element ={<ClassSearch token={token}/>} />
-            <Route path = "/class/details" element ={<ClassesDetails token={token}/>} />
-            <Route path = "/faculty/feed" element ={<FacultyFeed token={token}/>} />
+            <Route path = "/student/class/search" element ={<ClassSearch user={user} getCurrentUser={getCurrentUser} currentUser={currentUser} token={token}/>} />
+            <Route path = "/class/details" element ={<ClassesDetails token={token} />} />
+            <Route path = "/faculty/feed" element ={<FacultyFeed token={token}  getCurrentUser={getCurrentUser}  />} />
             <Route path = "/faculty/registration" element ={<FacultyRegistration facultySignup={facultySignup}/>} />
             <Route path = "/landing" element ={<LandingPage/>} />
-            <Route path = "/student/login" element ={<Login login={login}/>} />
+            <Route path = "/student/login" element ={<Login login={login} />} />
             <Route path = "/faculty/login" element ={<FacultyLogin login={login}/>} />
             <Route path = "/login/options" element ={<LoginOptions/>} />
-            <Route path = "/student/schudle" element ={<Schudle token={token} />} />
-            <Route path = "/student/feed" element ={<StudentFeed token={token}/>} />
+            <Route path = "/student/schudle" element ={<Schudle  token={token}  user={user} getCurrentUser={getCurrentUser} currentUser={currentUser}/>} />
+            <Route path = "/student/feed" element ={<StudentFeed token={token} getCurrentUser={getCurrentUser} />} />
             <Route path = "/student/registration" element ={<StudentRegistration studentSignup ={studentSignup}/>} />
-            <Route path = "/faculty/classupdate" element ={<UpdateClass token={token}/>} />
+            <Route path = "/faculty/existingclasses" element ={<ExistingClasses token={token} classes={classes} retrieveClasses={retrieveClasses}/>} />
+            <Route path = "/faculty/updateclass" element ={<UpdateClass token={token} classes={classes} retrieveClasses={retrieveClasses}/>} />
             <Route path = "/faculty/createclass" element ={<CreateClass token={token}/>} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

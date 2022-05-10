@@ -29,13 +29,18 @@ class ApiServices{
     updateClasses(id, data, token){
         console.log(token);
         axios.defaults.headers.common['Authorization'] = 'Token ' + token;
-        return axios.put('http://127.0.0.1:8000/api/update/classes/${id}/', data);
+        return axios.put(`http://127.0.0.1:8000/api/update/classes/${id}/`, data);
+    }
+    enrollClass(id, data, token){
+        console.log(token);
+        axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+        return axios.put('http://127.0.0.1:8000/api/profile/'+id+'/', data);
     }
 
     deleteClasses(id, token){
         console.log(token);
         axios.defaults.headers.common['Authorization'] = 'Token ' + token;
-        return axios.delete('http://127.0.0.1:8000/api/delete/classes/${id}/');
+        return axios.delete(`http://127.0.0.1:8000/api/delete/classes/${id}/`);
     }
 
     login(data){

@@ -7,6 +7,7 @@ const StudentFeed = props => {
 
     useEffect(() => {
         retrieveUser();
+        props.getCurrentUser();
       }, [props.token]);
     
       const retrieveUser = () => {
@@ -17,11 +18,12 @@ const StudentFeed = props => {
         })
 
       };
+      
 
     return (
         <Body sidebar>
         <div>
-            Classes feed {user.id}
+            Classes feed {user.user}
         </div>
     </Body>
     );
