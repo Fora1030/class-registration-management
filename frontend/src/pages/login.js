@@ -20,7 +20,6 @@ const Login = (props) => {
   };
   const login = () => {
     props.login({username: username , password: password});
-
     let path = "/student/feed"; 
     navigate(path);
   }

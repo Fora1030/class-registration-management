@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
 
 
@@ -39,6 +40,7 @@ code {
   background-color: #eee;
 }
 
+
 .Sidebar {
   width: 100px;
   margin: 5px;
@@ -68,10 +70,12 @@ code {
   background-color: #def;
 }
 
-.InputField {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
 h2 {
   color: black;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem; 
 }

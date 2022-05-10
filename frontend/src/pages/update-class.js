@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import ApiServices from "../services/api-services";
 import Body from '../components/Body';
-import axios from 'axios';
 import Form from 'react-bootstrap/Form';  
 import Container from 'react-bootstrap/Container';  
 import { Link } from "react-router-dom";
@@ -11,70 +10,42 @@ import Alert from 'react-bootstrap/Alert'
 
 
 const UpdateClass = props => {
-    const [class_name, setclass_name] =useState([]);
-    const [professor_name, setprofessor_name] =useState([]); 
-    const [number_of_credits, setnumber_of_credits] =useState([]);
-    const [description, setdescription] =useState([]);
-    const [location, setlocation] =useState([]);
-    const [start_date, setstart_date] =useState([]);
-    const [end_date, setend_date] =useState([]);
-    const [avaible_seats, setavaible_seats] =useState([]);
-    const [currentClass, setCurrentClass] = useState([]);
-
     const selectedClass = useLocation();
 
-    useEffect(()=>{
-        console.log("Current Class -obejct", selectedClass)
-        console.log("Current Class -state", selectedClass.state)
-        console.log("Current Class -currentClass", selectedClass.state.currentClass)
-        console.log("Current Class -currentClass -id", selectedClass.state.currentClass.class_id)
-    },[])
+    const initialFormData = Object.freeze({
+      "class_name" : selectedClass.state.currentClass.class_name ,
+      "professor_name" : selectedClass.state.currentClass.professor_name,
+      "number_of_credits": selectedClass.state.currentClass.number_of_credits,
+      "description" :  selectedClass.state.currentClass.description ,
+      "location" :  selectedClass.state.currentClass.location,
+      "start_date" : selectedClass.state.currentClass.start_date ,
+      "end_date" : selectedClass.state.currentClass.end_date ,
+      "avaible_seats": selectedClass.state.currentClass.avaible_seats,
+    });
 
+    const [formData, updateFormData] = useState(initialFormData)
     
-    const onChangeClassName =(e) => {
-        const  class_name =e.target.value;
-        setclass_name(class_name);
-    };
-    const onChangeProfessor =(e) => {
-        const professor_name = e.target.value;
-        setprofessor_name(professor_name);
-    };
-    const onChangeNumberOfCredits =(e) => {
-        const number_of_credits =e.target.value;
-        setnumber_of_credits(number_of_credits);
-    };
-    const onChangeDescription =(e) => {
-        const description=e.target.value;
-        setdescription(description);
+    const handleChange =(e) => {
+      updateFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
     };
     
-    const onChangeLocation =(e) => {
-        const location=e.target.value;
-        setlocation(location);
-    };
-    const onChangeStartDate =(e) => {
-        const start_date=e.target.value;
-        setstart_date(start_date);
-    }; 
-    const onChangeEndDate =(e) => {
-        const end_date=e.target.value;
-        setend_date(end_date);
-    };     
-    const onChangeSeats =(e) => {
-        const avaible_seats=e.target.value;
-        setavaible_seats(avaible_seats);
-    };
+    useEffect(() => {
+      updateClass();
+    }, [props.token]);
     
-    const createClasses = () => {
-      ApiServices.updateClasses(selectedClass.state.currentClass.class_id,{
-        "class_name" : class_name ,
-        "professor_name" : professor_name,
-        "number_of_credits": number_of_credits,
-        "description" : description ,
-        "location" :  location,
-        "start_date" : start_date ,
-        "end_date" : end_date ,
-        "avaible_seats": avaible_seats
+    const updateClass = () => {
+      ApiServices.updateClasses( selectedClass.state.currentClass.class_id,{
+        "class_name" : formData.class_name ,
+        "professor_name" : formData.professor_name,
+        "number_of_credits": formData.number_of_credits,
+        "description" : formData.description ,
+        "location" :  formData.location,
+        "start_date" : formData.start_date ,
+        "end_date" : formData.end_date ,
+        "avaible_seats": formData.avaible_seats
       }, props.token )
       .then ((response) => {
           console.log(response);
@@ -96,83 +67,103 @@ const UpdateClass = props => {
         <Form>
   
           <Form.Group className="mb-3">
-            <Form.Label>Class Name</Form.Label>
+            <Form.Label><b>Class Name: </b>
+            </Form.Label>
             <Form.Control
               type="text"
-              defaultValue= { selectedClass.state.currentClass.class_name}
-              onChange={onChangeClassName}
+              value={formData.class_name}
+              name="class_name"
+              onChange={handleChange}
               />
           </Form.Group>
   
           <Form.Group className="mb-3">
-            <Form.Label>Professor Name</Form.Label>
+            <Form.Label><b>Professor Name:</b>
+            </Form.Label>
             <Form.Control
               type="text"
-              defaultValue={ selectedClass.state.currentClass.professor_name}
-              onChange={onChangeProfessor}
+             value={formData.professor_name}
+             name="professor_name"
+              onChange={handleChange}
               />
           </Form.Group>
   
           <Form.Group className="mb-3">
-            <Form.Label>Number of Credits</Form.Label>
+            <Form.Label><b>Number of Credits:</b>
+
+            </Form.Label>
             <Form.Control
               type="text"
-              defaultValue={ selectedClass.state.currentClass.number_of_credits}
-              onChange={onChangeNumberOfCredits}
+              value={formData.number_of_credits}
+              name="number_of_credits"
+              onChange={handleChange}
               />
           </Form.Group>
   
           <Form.Group className="mb-3">
-            <Form.Label>Location</Form.Label>
+            <Form.Label><b>Location:</b>
+
+            </Form.Label>
             <Form.Control
               type="text"
-             defaultValue= { selectedClass.state.currentClass.location}
-              onChange={onChangeLocation}
+             value={formData.location}
+             name="location"
+              onChange={handleChange}
               />
           </Form.Group>
             
           <Form.Group className="mb-3">
-            <Form.Label>Number of Seats</Form.Label>
+            <Form.Label><b>Number of Seats:</b> 
+
+            </Form.Label>
             <Form.Control
               type="text"
-             defaultValue= { selectedClass.state.currentClass.avaible_seats}
-              onChange={onChangeSeats}
+             value={formData.avaible_seats}
+             name="avaible_seats"
+              onChange={handleChange}
               />
           </Form.Group>
   
   
           <Form.Group className="mb-3">
-            <Form.Label>Description</Form.Label>
+            <Form.Label><b>Description:</b>
+
+            </Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
-             defaultValue= { selectedClass.state.currentClass.description}
-              onChange={onChangeDescription}
+              value={formData.description}
+              name="description"
+              onChange={handleChange}
               />
           </Form.Group>
   
           <Form.Group className="mb-3">
-            <Form.Label>Class Start Date</Form.Label>
+            <Form.Label><b>Class Start Date:</b>
+
+            </Form.Label>
             <Form.Control
               type="date"
-              name="dod"
-              defaultValue= { selectedClass.state.currentClass.start_date}
-              onChange={onChangeStartDate}
+               value={formData.start_date}
+               name="start_date"
+              onChange={handleChange}
               />
           </Form.Group>
   
           <Form.Group className="mb-3">
-            <Form.Label>Class End Date</Form.Label>
+            <Form.Label>
+              <b>Class End Date: </b>
+            </Form.Label>
             <Form.Control
               type="date"
-              name="dod"
-                defaultValue= { selectedClass.state.currentClass}
+                value={formData.end_date}
+                name="end_date"
 
-              onChange={onChangeEndDate}
+              onChange={handleChange}
               />
           </Form.Group>
 
-          <Button variant="primary" onClick={createClasses}>
+          <Button variant="primary" onClick={updateClass}>
             Update Class
           </Button>
         </Form>

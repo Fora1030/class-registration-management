@@ -21,7 +21,7 @@ from django.views.generic import ListView
 class ClassesListAPIView(generics.ListAPIView):
     queryset = Classes.objects.all()
     serializer_class = ClassesListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_object(self):
         return self.request.user
@@ -36,7 +36,7 @@ class ClassesRetrieveAPIView(generics.RetrieveAPIView):
 class ClassesCreateAPIView(generics.CreateAPIView):
     queryset = Classes.objects.all()
     serializer_class = ClassesDetailSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 
 class ClassesRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
@@ -50,7 +50,7 @@ class ClassesDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = "class_id"
     serializer_class = ClassesDetailSerializer
     queryset = Classes.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 
 class StudentProfileRetrieveUpdateAPIView(viewsets.ModelViewSet):
@@ -136,4 +136,5 @@ def current_user(request):
       'username' : user.username,
       'first_name' : user.first_name,
       'last_name' : user.last_name,
+      'is_staff' : user.is_staff,
     })
